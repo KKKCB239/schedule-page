@@ -26,7 +26,7 @@
       align-items: center;
       background: #fff;
       border: 1px solid #ddd;
-      padding: 20px;
+      padding: 20px 30px;
       border-radius: 8px;
       margin-bottom: 16px;
       gap: 20px;
@@ -36,10 +36,9 @@
     .event-left {
       font-size: 18px;
       font-weight: bold;
-      min-width: 140px;
+      width: 160px;
       text-align: left;
       line-height: 1.4;
-      white-space: nowrap;
     }
 
     .date {
@@ -54,7 +53,8 @@
 
     .event-center {
       flex-grow: 1;
-      min-width: 200px;
+      min-width: 180px;
+      padding: 0 20px;
     }
 
     .vendor-name {
@@ -69,8 +69,8 @@
     }
 
     .event-right {
-      min-width: 80px;
-      text-align: right;
+      min-width: 100px;
+      text-align: center;
     }
 
     .vendor-logo {
@@ -88,7 +88,9 @@
         align-items: flex-start;
       }
 
-      .event-left, .event-center, .event-right {
+      .event-left,
+      .event-center,
+      .event-right {
         width: 100%;
       }
 
@@ -116,7 +118,7 @@
         image: 'images/minasand.jpg',
         url: 'https://www.instagram.com/mina.sand/'
       }
-      // 他の出店者も必要に応じて追加
+      // 他の出店者も必要に応じてここへ追加
     };
 
     const formatTime = (date) => {
@@ -157,6 +159,7 @@
           const timeRange = formatEventTimeRange(startStr, endStr);
           const summary = event.summary || '（名称未定）';
           const description = event.description || '（内容未定）';
+
           const vendor = vendorAssets[summary] || { image: '', url: '#' };
 
           const div = document.createElement('div');
