@@ -116,6 +116,7 @@
         image: 'images/minasand.jpg',
         url: 'https://www.instagram.com/mina.sand/'
       }
+      // 他の出店者も必要に応じて追加
     };
 
     const formatTime = (date) => {
@@ -177,27 +178,11 @@
           `;
           container.appendChild(div);
         });
-
-        // 高さ通知を発火
-        setTimeout(() => {
-          const height = document.documentElement.scrollHeight;
-          window.parent.postMessage({ frameHeight: height }, "*");
-        }, 500);
       })
       .catch(err => {
         document.getElementById('events').textContent = '予定の取得に失敗しました。';
         console.error(err);
       });
-
-    // ページロード時とリサイズ時に親に高さ通知
-    function sendHeightToParent() {
-      const height = document.documentElement.scrollHeight;
-      window.parent.postMessage({ frameHeight: height }, "*");
-    }
-
-    window.addEventListener("load", sendHeightToParent);
-    window.addEventListener("resize", sendHeightToParent);
-    setTimeout(sendHeightToParent, 1000);
   </script>
 </body>
 </html>
