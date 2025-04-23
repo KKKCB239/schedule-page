@@ -13,13 +13,6 @@
       padding: 20px;
     }
 
-    h1 {
-      font-size: 28px;
-      color: #ff5722;
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
     .event {
       display: flex;
       justify-content: space-between;
@@ -106,7 +99,6 @@
   </style>
 </head>
 <body>
-  <h1>出店スケジュール</h1>
   <div id="events">読み込み中...</div>
 
   <script>
@@ -118,7 +110,6 @@
         image: 'images/minasand.jpg',
         url: 'https://www.instagram.com/mina.sand/'
       }
-      // 他の出店者も必要に応じてここへ追加
     };
 
     const formatTime = (date) => {
@@ -159,7 +150,6 @@
           const timeRange = formatEventTimeRange(startStr, endStr);
           const summary = event.summary || '（名称未定）';
           const description = event.description || '（内容未定）';
-
           const vendor = vendorAssets[summary] || { image: '', url: '#' };
 
           const div = document.createElement('div');
