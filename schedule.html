@@ -82,7 +82,6 @@
       text-decoration: none;
     }
 
-    /* 📱 モバイル対応（600px以下） */
     @media (max-width: 600px) {
       .event {
         flex-direction: column;
@@ -101,22 +100,6 @@
       .vendor-logo {
         height: 40px;
       }
-
-      .date {
-        font-size: 18px;
-      }
-
-      .time-range {
-        font-size: 14px;
-      }
-
-      .vendor-name {
-        font-size: 17px;
-      }
-
-      .vendor-menu {
-        font-size: 14px;
-      }
     }
   </style>
 </head>
@@ -132,8 +115,7 @@
       'ミナサンド': {
         image: 'images/minasand.jpg',
         url: 'https://www.instagram.com/mina.sand/'
-      },
-      // 他の出店者も追加可能
+      }
     };
 
     const formatTime = (date) => {
@@ -147,7 +129,7 @@
       const endDate = new Date(endStr);
       const days = ['日', '月', '火', '水', '木', '金', '土'];
       const youbi = days[startDate.getDay()];
-      const dateStr = `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()}(${youbi.toUpperCase()})`;
+      const dateStr = `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()}(${youbi})`;
       const timeStr = `${formatTime(startDate)} ～ ${formatTime(endDate)}`;
       return { date: dateStr, time: timeStr };
     };
@@ -174,7 +156,6 @@
           const timeRange = formatEventTimeRange(startStr, endStr);
           const summary = event.summary || '（名称未定）';
           const description = event.description || '（内容未定）';
-
           const vendor = vendorAssets[summary] || { image: '', url: '#' };
 
           const div = document.createElement('div');
@@ -196,11 +177,27 @@
           `;
           container.appendChild(div);
         });
+
+        // 高さ通知を発火
+        setTimeout(() => {
+          const height = document.documentElement.scrollHeight;
+          window.parent.postMessage({ frameHeight: height }, "*");
+        }, 500);
       })
       .catch(err => {
         document.getElementById('events').textContent = '予定の取得に失敗しました。';
         console.error(err);
       });
+
+    // ページロード時とリサイズ時に親に高さ通知
+    function sendHeightToParent() {
+      const height = document.documentElement.scrollHeight;
+      window.parent.postMessage({ frameHeight: height }, "*");
+    }
+
+    window.addEventListener("load", sendHeightToParent);
+    window.addEventListener("resize", sendHeightToParent);
+    setTimeout(sendHeightToParent, 1000);
   </script>
 </body>
 </html>
