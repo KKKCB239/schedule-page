@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>出店スケジュール</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      background-color: #fff8f0;
+      color: #333;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #ff5722;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .event {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #fff;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .event-left {
+      font-size: 18px;
+      font-weight: bold;
+      min-width: 140px;
+      text-align: left;
+      line-height: 1.4;
+      white-space: nowrap;
+    }
+
+    .date {
+      font-size: 20px;
+    }
+
+    .time-range {
+      font-size: 16px;
+      margin-top: 4px;
+      font-weight: normal;
+    }
+
+    .event-center {
+      flex-grow: 1;
+      min-width: 200px;
+    }
+
+    .vendor-name {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .vendor-menu {
+      color: #555;
+      font-size: 15px;
+    }
+
+    .event-right {
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .vendor-logo {
+      height: 50px;
+      object-fit: contain;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    /* 📱 モバイル対応（600px以下） */
+    @media (max-width: 600px) {
+      .event {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .event-left, .event-center, .event-right {
+        width: 100%;
+      }
+
+      .event-right {
+        text-align: center;
+        margin-top: 12px;
+      }
+
+      .vendor-logo {
+        height: 40px;
+      }
+
+      .date {
+        font-size: 18px;
+      }
+
+      .time-range {
+        font-size: 14px;
+      }
+
+      .vendor-name {
+        font-size: 17px;
+      }
+
+      .vendor-menu {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>出店スケジュール</h1>
+  <div id="events">読み込み中...</div>
+
+  <script>
+    const calendarId = 'kitchencarbase.2024@gmail.com';
+    const apiKey = 'AIzaSyD3n-BBvfREFCfQQe8_FA-w8wh6-brWzUM';
+
+    const vendorAssets = {
+      'ミナサンド': {
+        image: '/images/minasando.png',
+        url: 'https://minasando.com'
+      },
+      // 他の出店者も追加可能
+    };
+
+    const formatTime = (date) => {
+      const hour = date.getHours();
+      const minute = String(date.getMinutes()).padStart(2, '0');
+      return `${hour}:${minute}`;
+    };
+
+    const formatEventTimeRange = (startStr, endStr) => {
+      const startDate = new Date(startStr);
+      const endDate = new Date(endStr);
+      const days = ['日', '月', '火', '水', '木', '金', '土'];
+      const youbi = days[startDate.getDay()];
+      const dateStr = `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()}(${youbi.toUpperCase()})`;
+      const timeStr = `${formatTime(startDate)} ～ ${formatTime(endDate)}`;
+      return { date: dateStr, time: timeStr };
+    };
+
+    const now = new Date().toISOString();
+    const maxDate = new Date();
+    maxDate.setMonth(maxDate.getMonth() + 1);
+    const maxTime = maxDate.toISOString();
+
+    fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}&timeMin=${now}&timeMax=${maxTime}&singleEvents=true&orderBy=startTime`)
+      .then(response => response.json())
+      .then(data => {
+        const container = document.getElementById('events');
+        container.innerHTML = '';
+        if (!data.items || data.items.length === 0) {
+          container.textContent = '出店予定はまだありません。';
+          return;
+        }
+
+        data.items.forEach(event => {
+          const startStr = event.start.dateTime || event.start.date;
+          const endStr = event.end.dateTime || event.end.date;
+
+          const timeRange = formatEventTimeRange(startStr, endStr);
+          const summary = event.summary || '（名称未定）';
+          const description = event.description || '（内容未定）';
+
+          const vendor = vendorAssets[summary] || { image: '', url: '#' };
+
+          const div = document.createElement('div');
+          div.className = 'event';
+          div.innerHTML = `
+            <div class="event-left">
+              <div class="date">${timeRange.date}</div>
+              <div class="time-range">${timeRange.time}</div>
+            </div>
+            <div class="event-center">
+              <div class="vendor-name">${summary}</div>
+              <div class="vendor-menu">${description}</div>
+            </div>
+            <div class="event-right">
+              <a href="${vendor.url}" target="_blank">
+                <img src="${vendor.image}" alt="${summary}のロゴ" class="vendor-logo">
+              </a>
+            </div>
+          `;
+          container.appendChild(div);
+        });
+      })
+      .catch(err => {
+        document.getElementById('events').textContent = '予定の取得に失敗しました。';
+        console.error(err);
+      });
+  </script>
+</body>
+</html>
