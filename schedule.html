@@ -22,7 +22,7 @@
       align-items: center;
       background: #fff;
       border: 1px solid #ddd;
-      padding: 16px 20px; /* ← 余白を少しコンパクトに */
+      padding: 16px 20px;
       border-radius: 8px;
       margin-bottom: 16px;
       gap: 20px;
@@ -32,49 +32,51 @@
     }
 
     .event-left {
-      font-size: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       font-weight: bold;
-      width: 160px;
-      text-align: left;
-      line-height: 1.4;
+    }
+
+    .date-time {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      font-size: 18px;
     }
 
     .date {
-      font-size: 20px;
+      font-size: 22px;
     }
 
     .time-range {
-      font-size: 16px;
-      margin-top: 4px;
+      font-size: 18px;
       font-weight: normal;
     }
 
     .event-center {
-      flex-grow: 1;
-      min-width: 180px;
-      padding: 0 20px;
+      flex: 1 1 auto;
     }
 
     .vendor-name {
       font-weight: bold;
-      font-size: 18px;
-      margin-bottom: 4px;
+      font-size: 20px;
+      margin-bottom: 6px;
     }
 
     .vendor-menu {
-      color: #555;
-      font-size: 15px;
-      line-height: 1.6; /* ← 行間を改善して可読性UP */
+      color: #333;
+      font-size: 16px;
+      line-height: 1.6;
     }
 
     .event-right {
-      min-width: 100px;
+      min-width: 80px;
       text-align: center;
-      margin-top: 12px; /* ← ロゴが下詰まりにならないように調整 */
     }
 
     .vendor-logo {
-      height: 40px; /* ← 少し小さくしてモバイルでのバランス改善 */
+      height: 48px;
       object-fit: contain;
     }
 
@@ -86,8 +88,6 @@
       .event {
         flex-direction: column;
         align-items: flex-start;
-        padding: 16px;
-        box-sizing: border-box;
       }
 
       .event-left,
@@ -96,13 +96,23 @@
         width: 100%;
       }
 
+      .date-time {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
       .event-right {
-        text-align: center;
+        text-align: right;
         margin-top: 12px;
       }
 
       .vendor-logo {
-        height: 36px;
+        height: 40px;
+      }
+
+      .vendor-menu {
+        font-size: 15px;
       }
     }
   </style>
@@ -165,8 +175,10 @@
           div.className = 'event';
           div.innerHTML = `
             <div class="event-left">
-              <div class="date">${timeRange.date}</div>
-              <div class="time-range">${timeRange.time}</div>
+              <div class="date-time">
+                <span class="date">${timeRange.date}</span>
+                <span class="time-range">${timeRange.time}</span>
+              </div>
             </div>
             <div class="event-center">
               <div class="vendor-name">${summary}</div>
