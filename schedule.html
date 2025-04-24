@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- モバイル対応のビューポート設定 -->
   <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&display=swap" rel="stylesheet"> <!-- Googleフォントを読み込み -->
   <style>
-    html, body { /* 全体の基本スタイル */
+    html, body {
       font-family: 'M PLUS Rounded 1c', sans-serif;
       background-color: #D8EFED;
       color: #333;
@@ -39,7 +39,7 @@
     .date-block {
       display: flex;
       align-items: baseline;
-      gap: 8px;
+      gap: 16px; /* ← ここで日付と時間の間のスペースを拡大 */
       white-space: nowrap;
     }
 
@@ -50,7 +50,7 @@
 
     .date-sub {
       font-size: 15px;
-      font-weight: normal;
+      font-weight: bold; /* ← 曜日も太字に */
     }
 
     .event-center {
@@ -114,6 +114,11 @@
 
       .date-sub {
         font-size: 13px;
+        font-weight: bold; /* モバイルでも曜日を太字に */
+      }
+
+      .date-block {
+        gap: 12px; /* モバイルでもやや広げる */
       }
     }
   </style>
