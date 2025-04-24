@@ -34,24 +34,12 @@
     .event-left {
       display: flex;
       flex-direction: column;
-      gap: 6px;
       font-weight: bold;
     }
 
-    .date-time {
-      display: flex;
-      align-items: baseline;
-      gap: 16px;
+    .datetime {
       font-size: 18px;
-    }
-
-    .date {
-      font-size: 22px;
-    }
-
-    .time-range {
-      font-size: 18px;
-      font-weight: normal;
+      white-space: nowrap; /* ← 改行させない */
     }
 
     .event-center {
@@ -96,12 +84,6 @@
         width: 100%;
       }
 
-      .date-time {
-        justify-content: flex-start;
-        flex-wrap: wrap;
-        gap: 12px;
-      }
-
       .event-right {
         text-align: right;
         margin-top: 12px;
@@ -113,6 +95,10 @@
 
       .vendor-menu {
         font-size: 15px;
+      }
+
+      .datetime {
+        font-size: 16px;
       }
     }
   </style>
@@ -144,7 +130,7 @@
       const youbi = days[startDate.getDay()];
       const dateStr = `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()}(${youbi})`;
       const timeStr = `${formatTime(startDate)} ～ ${formatTime(endDate)}`;
-      return { date: dateStr, time: timeStr };
+      return { datetime: `${dateStr}　${timeStr}` };
     };
 
     const now = new Date().toISOString();
@@ -175,10 +161,7 @@
           div.className = 'event';
           div.innerHTML = `
             <div class="event-left">
-              <div class="date-time">
-                <span class="date">${timeRange.date}</span>
-                <span class="time-range">${timeRange.time}</span>
-              </div>
+              <div class="datetime">${timeRange.datetime}</div>
             </div>
             <div class="event-center">
               <div class="vendor-name">${summary}</div>
