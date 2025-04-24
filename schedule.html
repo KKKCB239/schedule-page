@@ -12,7 +12,7 @@
       color: #333;
       padding: 20px;
       margin: 0;
-      max-width: 100vw; 
+      max-width: 100vw;
       box-sizing: border-box;
     }
 
@@ -22,7 +22,7 @@
       align-items: center;
       background: #fff;
       border: 1px solid #ddd;
-      padding: 20px 30px;
+      padding: 16px 20px; /* ← 余白を少しコンパクトに */
       border-radius: 8px;
       margin-bottom: 16px;
       gap: 20px;
@@ -64,15 +64,17 @@
     .vendor-menu {
       color: #555;
       font-size: 15px;
+      line-height: 1.6; /* ← 行間を改善して可読性UP */
     }
 
     .event-right {
       min-width: 100px;
       text-align: center;
+      margin-top: 12px; /* ← ロゴが下詰まりにならないように調整 */
     }
 
     .vendor-logo {
-      height: 50px;
+      height: 40px; /* ← 少し小さくしてモバイルでのバランス改善 */
       object-fit: contain;
     }
 
@@ -100,7 +102,7 @@
       }
 
       .vendor-logo {
-        height: 40px;
+        height: 36px;
       }
     }
   </style>
