@@ -1,12 +1,12 @@
-<!DOCTYPE html>
-<html lang="ja">
+<!DOCTYPE html> <!-- HTML5文書であることを宣言 -->
+<html lang="ja"> <!-- ページの言語を日本語に設定 -->
 <head>
-  <meta charset="UTF-8">
-  <title></title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&display=swap" rel="stylesheet">
+  <meta charset="UTF-8"> <!-- 文字エンコーディングをUTF-8に設定 -->
+  <title></title> <!-- ブラウザのタブタイトル（空欄） -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- モバイル対応のビューポート設定 -->
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500&display=swap" rel="stylesheet"> <!-- Googleフォントを読み込み -->
   <style>
-    html, body {
+    html, body { /* 全体の基本スタイル */
       font-family: 'M PLUS Rounded 1c', sans-serif;
       background-color: #D8EFED;
       color: #333;
@@ -34,14 +34,23 @@
     .event-left {
       display: flex;
       flex-direction: column;
+    }
+
+    .date-block {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      white-space: nowrap;
+    }
+
+    .date-main {
+      font-size: 24px;
       font-weight: bold;
     }
 
-    .datetime {
-      font-size: 17px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .date-sub {
+      font-size: 15px;
+      font-weight: normal;
     }
 
     .event-center {
@@ -99,8 +108,12 @@
         font-size: 15px;
       }
 
-      .datetime {
-        font-size: 15px;
+      .date-main {
+        font-size: 18px;
+      }
+
+      .date-sub {
+        font-size: 13px;
       }
     }
   </style>
@@ -130,9 +143,9 @@
       const endDate = new Date(endStr);
       const days = ['日', '月', '火', '水', '木', '金', '土'];
       const youbi = days[startDate.getDay()];
-      const dateStr = `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()}(${youbi})`;
-      const timeStr = `${formatTime(startDate)}〜${formatTime(endDate)}`;
-      return { datetime: `${dateStr}・${timeStr}` };
+      const dateMain = `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()}`;
+      const dateSub = `(${youbi}) ${formatTime(startDate)} ～ ${formatTime(endDate)}`;
+      return { dateMain, dateSub };
     };
 
     const now = new Date().toISOString();
@@ -163,7 +176,10 @@
           div.className = 'event';
           div.innerHTML = `
             <div class="event-left">
-              <div class="datetime">${timeRange.datetime}</div>
+              <div class="date-block">
+                <span class="date-main">${timeRange.dateMain}</span>
+                <span class="date-sub">${timeRange.dateSub}</span>
+              </div>
             </div>
             <div class="event-center">
               <div class="vendor-name">${summary}</div>
