@@ -38,8 +38,10 @@
     }
 
     .datetime {
-      font-size: 18px;
-      white-space: nowrap; /* ← 改行させない */
+      font-size: 17px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .event-center {
@@ -98,7 +100,7 @@
       }
 
       .datetime {
-        font-size: 16px;
+        font-size: 15px;
       }
     }
   </style>
@@ -129,8 +131,8 @@
       const days = ['日', '月', '火', '水', '木', '金', '土'];
       const youbi = days[startDate.getDay()];
       const dateStr = `${startDate.getFullYear()}.${startDate.getMonth() + 1}.${startDate.getDate()}(${youbi})`;
-      const timeStr = `${formatTime(startDate)} ～ ${formatTime(endDate)}`;
-      return { datetime: `${dateStr}　${timeStr}` };
+      const timeStr = `${formatTime(startDate)}〜${formatTime(endDate)}`;
+      return { datetime: `${dateStr}・${timeStr}` };
     };
 
     const now = new Date().toISOString();
