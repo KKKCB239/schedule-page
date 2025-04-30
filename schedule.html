@@ -84,6 +84,14 @@
       object-fit: contain;
     }
 
+    /* 中央寄せスタイル */
+    #events.empty {
+      text-align: center;
+      font-size: 18px;
+      margin-top: 60px;
+      color: #666;
+    }
+
     @media (max-width: 600px) {
       .event {
         flex-direction: column;
@@ -97,7 +105,7 @@
       }
 
       .event-right {
-        display: none; /* モバイルではロゴ非表示 */
+        display: none;
       }
 
       .vendor-logo {
@@ -130,13 +138,11 @@
     const calendarId = 'kitchencarbase.2024@gmail.com';
     const apiKey = 'AIzaSyD3n-BBvfREFCfQQe8_FA-w8wh6-brWzUM';
 
-    // デフォルト画像とURL（vendorAssetsにない場合に使用）
     const defaultVendor = {
-      image: 'images/default.jpg',  // 必ず "images/default.jpg" をサーバーに置いてね
-      url: 'https://www.instagram.com/kk.kitchencar/'
+      image: 'images/default.jpg',
+      url: '#'
     };
 
-    // 出店者情報リスト
     const vendorAssets = {
       'ミナサンド': {
         image: 'images/minasand.jpg',
@@ -148,14 +154,12 @@
       }
     };
 
-    // 時刻のフォーマット関数
     const formatTime = (date) => {
       const hour = date.getHours();
       const minute = String(date.getMinutes()).padStart(2, '0');
       return `${hour}:${minute}`;
     };
 
-    // イベントの日付＋時間を整形する関数
     const formatEventTimeRange = (startStr, endStr) => {
       const startDate = new Date(startStr);
       const endDate = new Date(endStr);
@@ -171,7 +175,6 @@
     maxDate.setMonth(maxDate.getMonth() + 1);
     const maxTime = maxDate.toISOString();
 
-    // Google Calendar APIからイベント取得
     fetch(`https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events?key=${apiKey}&timeMin=${now}&timeMax=${maxTime}&singleEvents=true&orderBy=startTime`)
       .then(response => response.json())
       .then(data => {
@@ -180,6 +183,7 @@
 
         if (!data.items || data.items.length === 0) {
           container.textContent = '出店予定はまだありません。';
+          container.classList.add('empty'); // ← ここで中央寄せスタイルを適用
           return;
         }
 
@@ -190,7 +194,7 @@
           const timeRange = formatEventTimeRange(startStr, endStr);
           const summary = event.summary || '（名称未定）';
           const description = event.description || '（内容未定）';
-          const vendor = vendorAssets[summary] || defaultVendor;  // 見つからなければデフォルト
+          const vendor = vendorAssets[summary] || defaultVendor;
 
           const div = document.createElement('div');
           div.className = 'event';
@@ -217,7 +221,9 @@
         });
       })
       .catch(err => {
-        document.getElementById('events').textContent = '予定の取得に失敗しました。';
+        const container = document.getElementById('events');
+        container.textContent = '予定の取得に失敗しました。';
+        container.classList.add('empty');
         console.error(err);
       });
   </script>
